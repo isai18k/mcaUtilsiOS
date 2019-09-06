@@ -1,0 +1,100 @@
+# Uncomment this line to define a global platform for your project
+platform :ios, '9.0'
+
+def localization_pods
+  pod 'GoogleMaps', '3.0.3'
+end
+
+def crash_pods
+  pod 'Fabric', '1.7.3'
+  pod 'Crashlytics', '3.10'
+end
+
+def notifications_pods
+  pod 'UrbanAirship-iOS-SDK'
+end
+
+def popup_pods
+  #  pod 'MTPopup', '~> 1.1.0'
+end
+
+def help_pods
+  pod 'SwiftyJSON','~> 3.0.0'
+end
+
+def ui_pods
+  pod 'lottie-ios','2.5.0'
+end
+
+def register_pods
+  pod 'SwiftValidator', :git => 'https://github.com/jpotts18/SwiftValidator.git', :branch => 'master'
+end
+
+def project_pods
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  pod 'Cartography', '~> 3.0'
+  pod 'SkyFloatingLabelTextField', '3.6.0'
+  # Pods for MiClaro
+  pod 'FontAwesome.swift', '~> 1.6.0'
+  pod 'DLRadioButton', '~> 1.4.9'
+  pod 'khenshin', :git => 'https://bitbucket.org/khipu/khenshin-pod.git', :tag => '1.298'
+#  pod 'khenshin', :git => 'https://github.com/khipu/khenshin-pod.git', :tag => '1.548'
+  #auto-linked
+  pod 'ObjectMapper', '3.4.2'
+  pod 'IBMMobileFirstPlatformFoundation'
+  pod 'JSONWebToken'
+  pod 'PKHUD', '~> 5.2.1'
+  #  pod 'SidebarOverlay', '~> 4.1.0'
+  pod 'XLPagerTabStrip', '~> 8.1.0'
+  #  pod 'ReachabilitySwift', '4.3.0'
+end
+
+target 'mcaLoginiOS' do
+  platform :ios, '9.0'
+  use_frameworks!
+  project '../../mcaLoginiOS/mcaLoginiOS.xcodeproj'
+  workspace '../../mcaWorkspaceKhipuTest/mcaWorkspaceKhipuTest.xcworkspace'
+  project_pods
+  #Autolinked frameworks
+  notifications_pods
+end
+
+target 'mcaUtilsiOS' do
+  platform :ios, '9.0'
+  use_frameworks!
+  project '../../mcaUtilsiOS/mcaUtilsiOS.xcodeproj'
+  workspace '../../mcaWorkspaceKhipuTest/mcaWorkspaceKhipuTest.xcworkspace'
+  project_pods
+  ui_pods
+end
+
+target 'KhipuTest' do
+    # Uncomment this line if you're using Swift or would like to use dynamic frameworks
+    platform :ios, '9.0'
+    use_frameworks!
+    
+    project '../../mcaWorkspaceKhipuTest/KhipuTest/KhipuTest.xcodeproj'
+    workspace '../../mcaWorkspaceKhipuTest/mcaWorkspaceKhipuTest.xcworkspace'
+    
+    localization_pods
+    crash_pods
+    notifications_pods
+    
+    help_pods
+    ui_pods
+    register_pods
+    project_pods
+    pod 'EasyTipView', '~> 2.0.4'
+end
+
+post_install do |installer|
+  
+  installer.pods_project.targets.each do |target|
+    
+    if target.name == 'JSONWebToken'
+      system("rm -rf Pods/JSONWebToken/CommonCrypto")
+    end
+    
+  end
+  
+end
